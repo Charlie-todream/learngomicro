@@ -18,7 +18,10 @@ func main() {
 	v1Group := ginRouter.Group("/v1")
 	{
 		v1Group.Handle("GET", "/prods", func(context *gin.Context) {
-			context.JSON(200,ProdServcie.NewProdList(5))
+			context.JSON(200, ProdServcie.NewProdList(5))
+		})
+		v1Group.Handle("GET", "/user", func(context *gin.Context) {
+			context.JSON(200, ProdServcie.NewProdList(5))
 		})
 	}
 
@@ -26,7 +29,7 @@ func main() {
 		web.Name("prodservice"), // 注册到consul服务中的service name
 		web.Address(":8001"),
 		web.Handler(ginRouter),
-		web.Registry(consulReg),  // 注册到哪个服务器上的consul中
+		web.Registry(consulReg), // 注册到哪个服务器上的consul中
 	)
 	server.Run()
 }
