@@ -1,8 +1,9 @@
 package main
 
 import (
+	"github.com/asim/go-micro/v3/web"
 	"github.com/gin-gonic/gin"
-	"github.com/micro/go-micro/v2/web"
+
 )
 
 func main() {

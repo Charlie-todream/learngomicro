@@ -1,11 +1,13 @@
 package main
 
 import (
+	"github.com/asim/go-micro/plugins/registry/consul/v3"
+	"github.com/asim/go-micro/v3/registry"
+	"github.com/asim/go-micro/v3/web"
 	"github.com/charlie/micro/ProdServcie"
 	"github.com/gin-gonic/gin"
-	"github.com/micro/go-micro/v2/registry"
-	"github.com/micro/go-micro/v2/web"
-	"github.com/micro/go-plugins/registry/consul/v2"
+
+
 )
 
 func main() {
@@ -14,15 +16,26 @@ func main() {
 		registry.Addrs("localhost:8500"),
 	)
 
+
 	ginRouter := gin.Default()
+
+	ginRouter.Handle("GET", "/user", func(context *gin.Context) {
+		context.String(200, "user api")
+	})
+	ginRouter.Handle("GET", "/news", func(context *gin.Context) {
+		context.String(200, "news api")
+	})
+
 	v1Group := ginRouter.Group("/v1")
 	{
-		v1Group.Handle("GET", "/prods", func(context *gin.Context) {
-			context.JSON(200, ProdServcie.NewProdList(5))
+		v1Group.Handle("POST", "/prods", func(context *gin.Context) {
+			context.JSON(
+				200,
+				gin.H{
+					"data":ProdServcie.NewProdList(2),
+				})
 		})
-		v1Group.Handle("GET", "/user", func(context *gin.Context) {
-			context.JSON(200, ProdServcie.NewProdList(5))
-		})
+
 	}
 
 	server := web.NewService(

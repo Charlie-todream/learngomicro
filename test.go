@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/micro/go-micro/v2/client/selector"
-	"github.com/micro/go-micro/v2/registry"
-	"github.com/micro/go-micro/v2/util/log"
-	"github.com/micro/go-plugins/registry/consul/v2"
+	"github.com/asim/go-micro/plugins/registry/consul/v3"
+	"github.com/asim/go-micro/v3/registry"
+	"github.com/asim/go-micro/v3/selector"
+	"github.com/asim/go-micro/v3/util/log"
+
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -32,7 +33,7 @@ func main() {
 	for {
 		getService, err := consulReg.GetService("prodservice")
 		if err != nil {
-			log.Fatal(err)
+		log.Fatal()
 		}
 
 		next := selector.RoundRobin(getService) // 轮询的方式 Random
@@ -40,7 +41,7 @@ func main() {
 		if err != nil {
 			log.Fatal()
 		}
-		callRes, err := callAPI(node.Address, "/v1/user", "GET")
+		callRes, err := callAPI(node.Address, "/v1/prods", "POST")
 		if err != nil {
 			log.Fatal(err)
 		}
